@@ -78,7 +78,7 @@ private:
     bool gameOver;
     int score;
     int speed;
-    int highscore;
+    int highScore;
 
     void setCursorPosition(int x, int y) {
         COORD coord;
@@ -166,7 +166,7 @@ private:
         }
         cout << endl;
 
-        cout << "Score: " << score <<"highscore: "<< highscore<< endl;
+        cout << "Score: " << score <<"highScore: "<< highScore<< endl;
     }
 
     void handleInput() {
@@ -201,7 +201,7 @@ private:
     }
 
     void showGameOverScreen() {
-        cout << "\nGame Over! Your final score: " << score <<"highscore: "<< highscore<< endl;
+        cout << "\nGame Over! Your final score: " << score <<"highScore: "<< highScore<< endl;
         cout << "Press 'R' to restart\n";
         cout << "Press 'L' to reselect level\n";
         cout << "Press 'X' to exit\n";
@@ -224,7 +224,7 @@ private:
     }
 
 public:
-    Game() : score(0), gameOver(false), speed(120), highscore(0) {}
+    Game() : score(0), gameOver(false), speed(120), highScore(0) {}
 
     void restart() {
         snake = Snake();
