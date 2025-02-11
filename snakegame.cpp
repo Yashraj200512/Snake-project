@@ -35,18 +35,18 @@ public:
         }
 
         body.insert(body.begin(), newHead);
-        body.pop_back(); // Remove tail unless food is eaten
+        body.pop_back(); 
     }
 
     void grow() {
-        body.push_back(body.back()); // Add extra segment
+        body.push_back(body.back()); 
     }
 
     bool hasCollided() {
         pair<int, int> head = body[0];
 
         if (head.first < 0 || head.first >= GRID_SIZE || head.second < 0 || head.second >= GRID_SIZE) {
-            return true; // Hits wall
+            return true; // H
         }
 
         for (size_t i = 1; i < body.size(); i++) {
@@ -78,6 +78,7 @@ private:
     bool gameOver;
     int score;
     int speed;
+    int highscore;
 
     void setCursorPosition(int x, int y) {
         COORD coord;
@@ -114,20 +115,20 @@ private:
         system("cls");
         cout << "Choose Difficulty Level:\n";
         cout << "1. Easy     (Speed: 200ms)\n";
-        cout << "2. Moderate (Speed: 120ms)\n";
-        cout << "3. Hard     (Speed: 80ms)\n";
+        cout << "2. Moderate (Speed: 150ms)\n";
+        cout << "3. Hard     (Speed: 100ms)\n";
         cout << "4. Extreme  (Speed: 50ms)\n";
         cout << "Enter your choice (1-4): ";
         cin >> choice;
 
         switch (choice) {
             case 1: speed = 200; break;
-            case 2: speed = 120; break;
-            case 3: speed = 80; break;
+            case 2: speed = 150; break;
+            case 3: speed = 100; break;
             case 4: speed = 50; break;
             default:
                 cout << "Invalid choice! Defaulting to Moderate (120ms).\n";
-                speed = 120;
+                speed = 150;
         }
     }
 
@@ -165,7 +166,7 @@ private:
         }
         cout << endl;
 
-        cout << "Score: " << score << endl;
+        cout << "Score: " << score <<"highscore: "<< highscore<< endl;
     }
 
     void handleInput() {
@@ -183,7 +184,10 @@ private:
 
     void updateGame() {
         snake.move();
-
+       
+        if (score > highScore) {
+            highScore = score;
+        }
         if (snake.hasCollided()) {
             gameOver = true;
             return;
@@ -197,7 +201,7 @@ private:
     }
 
     void showGameOverScreen() {
-        cout << "\nGame Over! Your final score: " << score << endl;
+        cout << "\nGame Over! Your final score: " << score <<"highscore: "<< highscore<< endl;
         cout << "Press 'R' to restart\n";
         cout << "Press 'L' to reselect level\n";
         cout << "Press 'X' to exit\n";
@@ -220,7 +224,7 @@ private:
     }
 
 public:
-    Game() : score(0), gameOver(false), speed(120) {}
+    Game() : score(0), gameOver(false), speed(120), highscore(0) {}
 
     void restart() {
         snake = Snake();
