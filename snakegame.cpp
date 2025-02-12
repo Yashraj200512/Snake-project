@@ -12,6 +12,16 @@ const int SNAKE_INITIAL_LENGTH = 3;
 
 enum Direction { UP, DOWN, LEFT, RIGHT };
 
+string Hs(int level) {
+    switch (level) {
+        case 0: return "Highscore-easy";
+        case 1: return "Highscore-moderate";
+        case 2: return "Highscore-hard";
+        case 3: return "Highscore-extreme";
+        default: return "Unknown level";
+    }
+}
+
 class Snake {
 public:
     vector<pair<int, int>> body;
@@ -19,7 +29,7 @@ public:
 
     Snake() {
         for (int i = 0; i < SNAKE_INITIAL_LENGTH; i++) {
-            body.push_back({GRID_SIZE / 2, GRID_SIZE / 2 - i}); //initialising snake body
+            body.push_back({GRID_SIZE / 2, GRID_SIZE / 2 - i});
         }
         direction = RIGHT;
     }
@@ -35,11 +45,11 @@ public:
         }
 
         body.insert(body.begin(), newHead);
-        body.pop_back(); 
+        body.pop_back();
     }
 
     void grow() {
-        body.push_back(body.back());  //food eaten
+        body.push_back(body.back());
     }
 
     bool hasCollided() {
@@ -78,8 +88,10 @@ private:
     bool gameOver;
     int score;
     int speed;
-    int highScore;
-    char grid[GRID_SIZE + 2][GRID_SIZE + 2]; 
+    int highScore[4]; // Store high scores for each level
+    int currentLevel;
+    char grid[GRID_SIZE + 2][GRID_SIZE + 2];
+
     void setCursorPosition(int x, int y) {
         COORD coord;
         coord.X = x;
@@ -122,31 +134,42 @@ private:
         cin >> choice;
 
         switch (choice) {
-            case 1: speed = 200; break;
-            case 2: speed = 150; break;
-            case 3: speed = 100; break;
-            case 4: speed = 50; break;
+            case 1: 
+                speed = 200; 
+                currentLevel = 0;
+                break;
+            case 2: 
+                speed = 150; 
+                currentLevel = 1;
+                break;
+            case 3: 
+                speed = 100; 
+                currentLevel = 2;
+                break;
+            case 4: 
+                speed = 50; 
+                currentLevel = 3;
+                break;
             default:
                 cout << "Invalid choice! Defaulting to Moderate (150ms).\n";
                 speed = 150;
+                currentLevel = 1; // Default level
         }
     }
 
     void initializeGrid() {
         for (int y = 0; y < GRID_SIZE + 2; y++) {
             for (int x = 0; x < GRID_SIZE + 2; x++) {
-                if (y == 0 || y == GRID_SIZE +1) grid[y][x] = '#'; 
-                else if (x == 0 || x == GRID_SIZE + 1) grid[y][x] = '|'; 
-                else grid[y][x] = ' '; 
+                if (y == 0 || y == GRID_SIZE + 1) grid[y][x] = '#';
+                else if (x == 0 || x == GRID_SIZE + 1) grid[y][x] = '|';
+                else grid[y][x] = ' ';
             }
         }
 
-    
         for (auto segment : snake.body) {
-            grid[segment.second + 1][segment.first + 1] = 'O'; 
+            grid[segment.second + 1][segment.first + 1] = 'O';
         }
 
-        
         grid[food.position.second + 1][food.position.first + 1] = 'F';
     }
 
@@ -161,7 +184,8 @@ private:
             cout << endl;
         }
 
-        cout << "Score: " << score << "  High Score: " << highScore << endl;
+        string highscoreString = Hs(currentLevel); 
+        cout << "Score: " << score << "  " << highscoreString << ": " << highScore[currentLevel] << endl;
     }
 
     void handleInput() {
@@ -180,9 +204,10 @@ private:
     void updateGame() {
         snake.move();
 
-        if (score > highScore) {
-            highScore = score;
+        if (score > highScore[currentLevel]) {
+            highScore[currentLevel] = score;
         }
+
         if (snake.hasCollided()) {
             gameOver = true;
             return;
@@ -196,7 +221,7 @@ private:
     }
 
     void showGameOverScreen() {
-        cout << "\nGame Over! Your final score: " << score << "  High Score: " << highScore << endl;
+        cout << "\nGame Over! Your final score: " << score << "  High Score: " << highScore[currentLevel] << endl;
         cout << "Press 'R' to restart\n";
         cout << "Press 'L' to reselect level\n";
         cout << "Press 'X' to exit\n";
@@ -219,7 +244,7 @@ private:
     }
 
 public:
-    Game() : score(0), gameOver(false), speed(150), highScore(0) {}
+    Game() : score(0), gameOver(false), speed(150), highScore{0, 0, 0, 0}, currentLevel(1) {}
 
     void restart() {
         system("cls");
