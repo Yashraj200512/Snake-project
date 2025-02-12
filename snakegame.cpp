@@ -29,7 +29,7 @@ public:
 
     Snake() {
         for (int i = 0; i < SNAKE_INITIAL_LENGTH; i++) {
-            body.push_back({GRID_SIZE / 2, GRID_SIZE / 2 - i});
+            body.push_back({GRID_SIZE / 2, GRID_SIZE / 2 - i});  //initial snake length
         }
         direction = RIGHT;
     }
@@ -40,27 +40,27 @@ public:
         switch (direction) {
             case UP: newHead.second--; break;
             case DOWN: newHead.second++; break;
-            case LEFT: newHead.first--; break;
+            case LEFT: newHead.first--; break;      //constantly makes snake moves
             case RIGHT: newHead.first++; break;
         }
 
         body.insert(body.begin(), newHead);
-        body.pop_back();
+        body.pop_back();                          
     }
 
     void grow() {
-        body.push_back(body.back());
+        body.push_back(body.back()); //when food is eaten
     }
 
     bool hasCollided() {
         pair<int, int> head = body[0];
 
-        if (head.first < 0 || head.first >= GRID_SIZE || head.second < 0 || head.second >= GRID_SIZE) {
+        if (head.first < 0 || head.first >= GRID_SIZE || head.second < 0 || head.second >= GRID_SIZE) {  //when it goes outside of greed
             return true;
         }
 
         for (size_t i = 1; i < body.size(); i++) {
-            if (body[i] == head) return true;
+            if (body[i] == head) return true;  //when snake touches itself
         }
 
         return false;
@@ -77,7 +77,7 @@ public:
 
     void spawn() {
         position.first = rand() % GRID_SIZE;
-        position.second = rand() % GRID_SIZE;
+        position.second = rand() % GRID_SIZE;  //random number generator
     }
 };
 
@@ -153,7 +153,7 @@ private:
             default:
                 cout << "Invalid choice! Defaulting to Moderate (150ms).\n";
                 speed = 150;
-                currentLevel = 1; // Default level
+                currentLevel = 1; 
         }
     }
 
@@ -161,7 +161,7 @@ private:
         for (int y = 0; y < GRID_SIZE + 2; y++) {
             for (int x = 0; x < GRID_SIZE + 2; x++) {
                 if (y == 0 || y == GRID_SIZE + 1) grid[y][x] = '#';
-                else if (x == 0 || x == GRID_SIZE + 1) grid[y][x] = '|';
+                else if (x == 0 || x == GRID_SIZE + 1) grid[y][x] = '|';  
                 else grid[y][x] = ' ';
             }
         }
@@ -201,7 +201,7 @@ private:
         }
     }
 
-    void updateGame() {
+    void updateGame() {      //constanly updates game so snake moves and makes snake grow and game over in case if second condition becomes true
         snake.move();
 
         if (score > highScore[currentLevel]) {
@@ -244,11 +244,11 @@ private:
     }
 
 public:
-    Game() : score(0), gameOver(false), speed(150), highScore{0, 0, 0, 0}, currentLevel(1) {}
+    Game() : score(0), gameOver(false), speed(150), highScore{0, 0, 0, 0}, currentLevel(1) {} //initializing before game starts
 
     void restart() {
-        system("cls");
-        snake = Snake();
+        system("cls"); //clears terminal everytime game restarts
+        snake = Snake(); 
         food.spawn();
         score = 0;
         gameOver = false;
@@ -262,12 +262,12 @@ public:
         chooseDifficulty();
         restart();
 
-        while (true) {
+        while (true) { //runs infinite loops
             while (!gameOver) {
                 displayGrid();
                 handleInput();
                 updateGame();
-                Sleep(speed);
+                Sleep(speed); //makes delaye in ms between these infinite loops
             }
             showGameOverScreen();
         }
@@ -275,7 +275,7 @@ public:
 };
 
 int main() {
-    srand(time(0));
+    srand(time(0)); 
     Game game;
     game.run();
     return 0;
