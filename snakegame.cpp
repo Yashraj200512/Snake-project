@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>                     //for using vector
 #include <conio.h>                    //for grtting input from user's keyboard
-#include <windows.h>                  //ffor sleep() function which determines snake's speed
+#include <windows.h>                  //for sleep() function which determines snake's speed
 #include <cstdlib>                    // for using rand function to generate food
 #include <ctime>                      //for time(0) used in rand to generate food in different place every time
 
@@ -71,15 +71,29 @@ class Food {
 public:
     pair<int, int> position;
 
-    Food() {
-        spawn();
+    Food(Snake& snake) {
+        spawn(snake);  // Pass the snake reference to the spawn function
     }
 
-    void spawn() {
-        position.first = rand() % GRID_SIZE;
-        position.second = rand() % GRID_SIZE;  //random number generator
+    void spawn(Snake& snake) {  // Accept Snake reference as a parameter
+        bool validPosition = false;
+
+        while (!validPosition) {
+            position.first = rand() % GRID_SIZE;
+            position.second = rand() % GRID_SIZE;
+
+            validPosition = true;
+            // Check if food spawns on the snake's body
+            for (auto segment : snake.body) {  // Correctly use snake.body
+                if (segment.first == position.first && segment.second == position.second) {
+                    validPosition = false;
+                    break;
+                }
+            }
+        }
     }
 };
+        
 
 class Game {
 private:
@@ -201,7 +215,7 @@ private:
         }
     }
 
-    void updateGame() {      //constanly updates game so snake moves and makes snake grow and game over in case if second condition becomes true
+    void updateGame() {      //constantly updates game so snake moves and makes snake grow and game over in case if second condition becomes true
         snake.move();
 
         if (score > highScore[currentLevel]) {
@@ -216,7 +230,7 @@ private:
         if (snake.body[0] == food.position) {
             score++;
             snake.grow();
-            food.spawn();
+            food.spawn(snake); // Pass the snake to spawn to avoid food on snake body
         }
     }
 
@@ -244,12 +258,12 @@ private:
     }
 
 public:
-    Game() : score(0), gameOver(false), speed(150), highScore{0, 0, 0, 0}, currentLevel(1) {} //initializing before game starts
+    Game() : score(0), gameOver(false), speed(150), highScore{0, 0, 0, 0}, currentLevel(1),food(snake) {} //initializing before game starts
 
     void restart() {
         system("cls"); //clears terminal everytime game restarts
         snake = Snake(); 
-        food.spawn();
+        food.spawn(snake); // Pass snake reference here
         score = 0;
         gameOver = false;
     }

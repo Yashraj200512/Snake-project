@@ -49,7 +49,7 @@ g++ snake_game.cpp -o snake_game.exe
 
 ## Code Structure
 - **initializeGame()** → Sets up the game environment.
-- **displayGrid()** → Prints the grid, snake, and food.
+- **displayGrid()** → Prints the grid, snake, and food and stores highscore of levels.
 - **handleInput()** → Checks keyboard input (_kbhit() detects if there's any keypress, _getch() reads the char key).
 - **updateGame()** → Moves the snake and handles collisions, growth, and food consumption.
 - **showGameOverScreen()** → Displays the "Game Over" message.
