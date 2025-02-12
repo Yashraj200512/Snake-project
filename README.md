@@ -32,14 +32,15 @@ g++ snake_game.cpp -o snake_game.exe
 
 ## Data Structure Analysis
 - **Snake Representation:** : vector<pair<int, int>>
-The snake’s body is stored as a vector of pair<int, int>, here each pair represents the x, y coordinates of the snake segment.
+ The snake’s body is stored as a vector of pair<int, int>, here each pair represents the x, y coordinates of the snake segment.
 
-- The head of the snake is always at body[0](at very front) and new positions are inserted at the front and tail is removed to maintain length
-- vector<pair<int, int>> body;
+  The head of the snake is always at body[0](at very front) and new positions are inserted at the front and tail is removed to maintain length
+  vector<pair<int, int>> body;
 - 'Operations':
 
-- Movement: Insert a new head at the front and remove the tail's last segment.
-- Growth(food): Add a new segment(o) at the tail without removing any part of snake.
+  Movement: Insert a new head at the front and remove the tail's last segment.
+  Growth(food): Add a new segment(o) at the tail without removing any part of snake.
+
 
 - **Grid Representation:** The game board is a 2D grid, managed  through 2d array.
 - The grid is 20x20, and any position (x, y) of head of snake outside [0, GRID_SIZE-1] results in a collision.
