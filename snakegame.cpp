@@ -55,7 +55,7 @@ public:
     bool hasCollided() {
         pair<int, int> head = body[0];
 
-        if (head.first < 0 || head.first >= GRID_SIZE || head.second < 0 || head.second >= GRID_SIZE) {  //when it goes outside of greed
+        if (head.first < 0 || head.first >= GRID_SIZE || head.second < 0 || head.second >= GRID_SIZE) {  //when it goes outside of grid,then if condition true
             return true;
         }
 
@@ -78,7 +78,7 @@ public:
     void spawn(Snake& snake) {  // Accept Snake reference as a parameter
         bool validPosition = false;
 
-        while (!validPosition) {
+        while (!validPosition) { //will keep running until validposition=true
             position.first = rand() % GRID_SIZE;
             position.second = rand() % GRID_SIZE;
 
