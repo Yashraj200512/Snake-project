@@ -46,11 +46,11 @@ public:
         pair<int, int> head = body[0];
 
         if (head.first < 0 || head.first >= GRID_SIZE || head.second < 0 || head.second >= GRID_SIZE) {
-            return true; // H
+            return true;
         }
 
         for (size_t i = 1; i < body.size(); i++) {
-            if (body[i] == head) return true; // Hits itself
+            if (body[i] == head) return true;
         }
 
         return false;
@@ -79,7 +79,7 @@ private:
     int score;
     int speed;
     int highScore;
-
+    char grid[GRID_SIZE + 2][GRID_SIZE + 2]; 
     void setCursorPosition(int x, int y) {
         COORD coord;
         coord.X = x;
@@ -127,46 +127,41 @@ private:
             case 3: speed = 100; break;
             case 4: speed = 50; break;
             default:
-                cout << "Invalid choice! Defaulting to Moderate (120ms).\n";
+                cout << "Invalid choice! Defaulting to Moderate (150ms).\n";
                 speed = 150;
         }
     }
 
+    void initializeGrid() {
+        for (int y = 0; y < GRID_SIZE + 2; y++) {
+            for (int x = 0; x < GRID_SIZE + 2; x++) {
+                if (y == 0 || y == GRID_SIZE + 1) grid[y][x] = '_'; 
+                else if (x == 0 || x == GRID_SIZE + 1) grid[y][x] = '|'; 
+                else grid[y][x] = ' '; 
+            }
+        }
+
+    
+        for (auto segment : snake.body) {
+            grid[segment.second + 1][segment.first + 1] = 'O'; 
+        }
+
+        
+        grid[food.position.second + 1][food.position.first + 1] = 'F';
+    }
+
     void displayGrid() {
         setCursorPosition(0, 0);
+        initializeGrid(); 
 
-        for (int x = 0; x < GRID_SIZE + 2; x++) {
-            cout << "_ ";
-        }
-        cout << endl;
-
-        for (int y = 0; y < GRID_SIZE; y++) {
-            cout << "| ";
-            for (int x = 0; x < GRID_SIZE; x++) {
-                bool isSnakeSegment = false;
-                for (auto segment : snake.body) {
-                    if (segment.first == x && segment.second == y) {
-                        isSnakeSegment = true;
-                        break;
-                    }
-                }
-                if (isSnakeSegment) {
-                    cout << "O ";
-                } else if (x == food.position.first && y == food.position.second) {
-                    cout << "F ";
-                } else {
-                    cout << "  ";
-                }
+        for (int y = 0; y < GRID_SIZE + 2; y++) {
+            for (int x = 0; x < GRID_SIZE + 2; x++) {
+                cout << grid[y][x] << " ";
             }
-            cout << "|" << endl;
+            cout << endl;
         }
 
-        for (int x = 0; x < GRID_SIZE + 2; x++) {
-            cout << "_ ";
-        }
-        cout << endl;
-
-        cout << "Score: " << score <<" highScore: "<< highScore<< endl;
+        cout << "Score: " << score << "  High Score: " << highScore << endl;
     }
 
     void handleInput() {
@@ -184,7 +179,7 @@ private:
 
     void updateGame() {
         snake.move();
-       
+
         if (score > highScore) {
             highScore = score;
         }
@@ -201,7 +196,7 @@ private:
     }
 
     void showGameOverScreen() {
-        cout << "\nGame Over! Your final score: " << score <<" " <<" and  highScore: "<< highScore<< endl;
+        cout << "\nGame Over! Your final score: " << score << "  High Score: " << highScore << endl;
         cout << "Press 'R' to restart\n";
         cout << "Press 'L' to reselect level\n";
         cout << "Press 'X' to exit\n";
@@ -227,6 +222,7 @@ public:
     Game() : score(0), gameOver(false), speed(150), highScore(0) {}
 
     void restart() {
+        system("cls");
         snake = Snake();
         food.spawn();
         score = 0;
