@@ -1,9 +1,9 @@
 #include <iostream>
-#include <vector>
-#include <conio.h>
-#include <windows.h>
-#include <cstdlib>
-#include <ctime>
+#include <vector>                     //for using vector
+#include <conio.h>                    //for grtting input from user's keyboard
+#include <windows.h>                  //ffor sleep() function which determines snake's speed
+#include <cstdlib>                    // for using rand function to generate food
+#include <ctime>                      //for time(0) used in rand to generate food in different place every time
 
 using namespace std;
 
@@ -19,7 +19,7 @@ public:
 
     Snake() {
         for (int i = 0; i < SNAKE_INITIAL_LENGTH; i++) {
-            body.push_back({GRID_SIZE / 2, GRID_SIZE / 2 - i});
+            body.push_back({GRID_SIZE / 2, GRID_SIZE / 2 - i}); //initialising snake body
         }
         direction = RIGHT;
     }
@@ -39,7 +39,7 @@ public:
     }
 
     void grow() {
-        body.push_back(body.back()); 
+        body.push_back(body.back());  //food eaten
     }
 
     bool hasCollided() {
@@ -135,7 +135,7 @@ private:
     void initializeGrid() {
         for (int y = 0; y < GRID_SIZE + 2; y++) {
             for (int x = 0; x < GRID_SIZE + 2; x++) {
-                if (y == 0 || y == GRID_SIZE + 1) grid[y][x] = '_'; 
+                if (y == 0 || y == GRID_SIZE +1) grid[y][x] = '#'; 
                 else if (x == 0 || x == GRID_SIZE + 1) grid[y][x] = '|'; 
                 else grid[y][x] = ' '; 
             }
