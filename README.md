@@ -48,9 +48,9 @@ g++ snake_game.cpp -o snake_game.exe
 - **Collision Detection:** Checks if the snake collides with walls or itself.
 
 ## Code Structure
-- 'initializeGame()' → Sets up the game environment.
-- 'displayGrid()' → Prints the grid, snake, and food.
-- 'handleInput()' → Checks keyboard input (_kbhit() detects if there's any keypress, _getch() reads the char key).
-- 'updateGame()' → Moves the snake and handles collisions, growth, and food consumption.
-- 'showGameOverScreen()' → Displays the "Game Over" message.
-- 'restart()' → Resets the game while only storing highscore/score
+- **initializeGame()** → Sets up the game environment.
+- **displayGrid()** → Prints the grid, snake, and food.
+- **handleInput()** → Checks keyboard input (_kbhit() detects if there's any keypress, _getch() reads the char key).
+- **updateGame()** → Moves the snake and handles collisions, growth, and food consumption.
+- **showGameOverScreen()** → Displays the "Game Over" message.
+- **restart()** → Resets the game while only storing highscore/score
