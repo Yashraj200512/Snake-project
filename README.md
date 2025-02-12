@@ -34,23 +34,22 @@ g++ snake_game.cpp -o snake_game.exe
 - **Snake Representation:** : vector<pair<int, int>>
 The snake’s body is stored as a vector of pair<int, int>, here each pair represents the x, y coordinates of the snake segment.
 
-The head of the snake is always at body[0](at very front), and new positions are added to the front while the tail is removed.
-
+The head of the snake is always at body[0](at very front) and new positions are inserted at the front and tail is removed to maintain length
 vector<pair<int, int>> body;
 Operations:
 
 Movement: Insert a new head at the front and remove the tail's last segment.
 Growth(food): Add a new segment(o) at the tail without removing any part of snake.
 
-- **Grid Representation:** The game board is a 2D grid, managed  through snake coordinates.
+- **Grid Representation:** The game board is a 2D grid, managed  through 2d array.
 The grid is 20x20, and any position (x, y) of head of snake outside [0, GRID_SIZE-1] results in a collision.
 - **Food Spawning:** Randomized using `rand()` within the grid boundaries and used srand(time(0)) to avoid spawming food at same place
 - **Collision Detection:** Checks if the snake collides with walls or itself.
 
 ## Code Structure
-- `initializeGame()`: Sets up the game environment.
-- `displayGrid()`: renders and displays game board (| and _),also displays snake body(o) and food(F) and everthing else remaining by " "(empty spaces)
-- `updateGame()`: Moves the snake and handles collisions.
-- `handleInput()`: obtains user input.[_kbhit checks if user presses any key value of that key is stored in _getch]
-
-
+- 'initializeGame()' → Sets up the game environment.
+- 'displayGrid()' → Prints the grid, snake, and food.
+- 'handleInput()' → Checks keyboard input (_kbhit() detects if there's any keypress, _getch() reads the char key).
+- 'updateGame()' → Moves the snake and handles collisions, growth, and food consumption.
+- 'showGameOverScreen()' → Displays the "Game Over" message.
+- 'restart()' → Resets the game while only storing highscore/score
